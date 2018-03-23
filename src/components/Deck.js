@@ -21,7 +21,8 @@ class Deck extends Component {
       isResizing: false,
       isTransitioning: false,
       isVerso: false,
-      items: null
+      items: null,
+      verticalPosition: {x: 0, y: 0},
     }
     this.onDebouncedResize = debounce(this.onResize, props.resizeTimeout)
   }
@@ -101,21 +102,23 @@ class Deck extends Component {
     this.setState({ isVerso: !this.state.isVerso })
   }
   onStart = (event, data) => {
-    this.setState({ isFlipping: true, clientY: event.clientY })
+    this.setState({ isFlipping: true })
   }
   onDrag = (event, data) => {
-    const { flipRatio } = this.props
-    const { deckElement, isVerso } = this.state
-    const cursor = (event.clientY - this.state.clientY) / deckElement.offsetHeight
-    if (
-      (!isVerso && cursor < -flipRatio) ||
-      (isVerso && cursor > flipRatio)
-    ) {
-      this.handleFlipCard()
-    }
+    // const { flipRatio } = this.props
+    // const { deckElement, isVerso } = this.state
+    // if (
+    //   (!isVerso && cursor < -flipRatio) ||
+    //   (isVerso && cursor > flipRatio)
+    // ) {
+    //   this.handleFlipCard()
+    // }
   }
   onStop = (event, data) => {
-    this.setState({ isFlipping: false, y: null })
+    this.setState({
+      isFlipping: false,
+      isVerso: data.y < -25,
+    })
   }
   onResize = event => {
     this.setState({ isResizing: true })
@@ -286,10 +289,11 @@ class Deck extends Component {
     //console.log('RENDER DECK', 'this.state.items', this.state.items)
     return (
       <Draggable axis='y'
-        bounds={{bottom: 0, top: 0}}
+        bounds={{top: -50, bottom: 0}}
         onDrag={onDrag}
         onStart={onStart}
-        onStop={onStop} >
+        onStop={onStop}
+        position={this.state.verticalPosition}>
         <div className={classnames('deck relative', { 'flex items-center': !isFullWidth })}
           id='deck'
           style={style}

@@ -7,8 +7,9 @@
     position: relative;
     transition-property: transform;
     transition-timing-function: ease;
-    // width: 100%;
-    // overflow: hidden;
+    &.no-transition {
+      transition: unset !important;
+    }
   }
   .board {
     position: absolute;

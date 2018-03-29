@@ -19,39 +19,46 @@ import selectNextUserMediation from '../selectors/nextUserMediation'
 import selectHeaderColor from '../selectors/headerColor'
 import { getOffer } from '../selectors/offer'
 
+const CENTER_POSITION = {x: 0, y: 0};
 
 class Deck extends Component {
 
   constructor (props) {
     super(props)
     this.state = {
+      transition: true,
+      position: CENTER_POSITION,
     }
-    this.xTranslation = 0;
   }
 
   goToPrev = () => {
     const deckWidth = this.$deck.offsetWidth;
-      this.xTranslation = this.xTranslation - deckWidth;
+    this.setState({
+      position: {x: deckWidth, y: 0}
+    })
+    setTimeout(() => {
+      this.setState({
+        transition: false,
+        position: CENTER_POSITION,
+      })
       const offer = getOffer(this.props.previousUserMediation)
       this.props.history.push(`/decouverte/${offer.id}`);
-    // setTimeout(() => {
-    //   // this.setState({
-    //   //   position: CENTER_POSITION,
-    //   // })
-    // }, this.props.transitionDuration)
+    }, this.props.transitionDuration)
   }
 
   goToNext = () => {
     const deckWidth = this.$deck.offsetWidth;
-    this.xTranslation = this.xTranslation + deckWidth;
-    const offer = getOffer(this.props.nextUserMediation)
-    this.props.history.push(`/decouverte/${offer.id}`);
-    // setTimeout(() => {
-    //   // this.setState({
-    //   //   position: CENTER_POSITION,
-    //   //   transition: false,
-    //   // })
-    // }, this.props.transitionDuration)
+    this.setState({
+      position: {x: -deckWidth, y: 0}
+    })
+    setTimeout(() => {
+      this.setState({
+        transition: false,
+        position: CENTER_POSITION,
+      })
+      const offer = getOffer(this.props.nextUserMediation)
+      this.props.history.push(`/decouverte/${offer.id}`);
+    }, this.props.transitionDuration)
   }
 
   onStop = (e, data) => {
@@ -64,7 +71,6 @@ class Deck extends Component {
   }
 
   render () {
-    console.log(this.xTranslation)
     const {
       previousUserMediation,
       nextUserMediation,
@@ -73,11 +79,10 @@ class Deck extends Component {
     } = this.props;
     return (
       <div className='deck' ref={$el => (this.$deck = $el)}>
-        <Draggable axis='x' onStop={this.onStop} position={{x: this.xTranslation, y: 0}}>
+        <Draggable axis='x' onStop={this.onStop} position={this.state.position}>
           <div style={{
             transitionDuration: `${this.props.transitionDuration}ms`,
-            transitionProperty: this.state.transition ? 'transform' : null
-          }}>
+          }} className={this.state.transition ? '' : 'no-transition'}>
             {previousUserMediation && <Card position='previous' userMediation={previousUserMediation} />}
             <Card position='current' userMediation={userMediation} />
             {nextUserMediation && <Card position='next' userMediation={nextUserMediation} />}

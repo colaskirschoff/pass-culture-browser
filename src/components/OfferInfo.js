@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import get from 'lodash.get';
 
 import selectOffer from '../selectors/offer'
 import selectSource from '../selectors/source'
@@ -9,6 +10,7 @@ import selectVenue from '../selectors/venue'
 class OfferInfo extends Component {
 
   render() {
+    if (!this.props.offer) return null;
     const {
       offer: {
         eventOccurence,

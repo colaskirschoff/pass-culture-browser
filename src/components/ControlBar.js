@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
+import get from 'lodash.get';
+
 
 import { requestData } from '../reducers/data'
 import { showModal } from '../reducers/modal'
@@ -51,7 +53,7 @@ class ControlBar extends Component {
           ) : (
             <button className='button button--primary button--go'
               onClick={e => this.props.showModal(<Booking />, {fullscreen: true, maskColor: 'transparent', hasCloseButton: false})} >
-              <span className='price'>{`${this.props.offer.price}€`}</span>
+              <span className='price'>{`${get(this.props, 'offer.price')}€`}</span>
               J'y vais!
             </button>
           )}

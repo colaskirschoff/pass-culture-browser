@@ -15,7 +15,7 @@ const Clue = ({
     <div className={classnames('clue', { 'clue--hidden': isHidden })}
       style={{ transition: `opacity ${transitionTimeout}ms`}}>
       <div>
-        <Price value={offer.price} />
+        <Price value={offer ? offer.price : 0} />
         <span className='clue__sep'>
           &middot;
         </span>

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import get from 'lodash.get';
 
 import ControlBar from './ControlBar'
 
@@ -16,12 +17,12 @@ class Verso extends Component {
       source,
       venue
     } = this.props
-    const author = source.extraData && source.extraData.author
+    const author = get(source, 'extraData.author')
     return (
       <div className='verso-wrapper' style={{ backgroundImage: `url('${ROOT_PATH}/mosaic-k.svg')` }}>
         <div className='verso-header' style={{ backgroundColor: headerColor }}>
-          <h2> { source.name }, { author && ("de " + author) } </h2>
-          <h6> { venue.name } </h6>
+          <h2> { get(source, 'name') }, { author && (`de ${author}`) } </h2>
+          <h6> { get(venue, 'name') } </h6>
         </div>
         {this.props.hasControlBar && <ControlBar />}
         <div className='content'>

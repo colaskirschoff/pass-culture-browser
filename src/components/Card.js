@@ -237,7 +237,7 @@ class Card extends Component {
     }
     // console.log('RENDER: Card content', content)
     return (
-      <div>
+      <div className={`card ${this.props.className}`}>
         <Draggable axis='x'
           bounds={bounds}
           disabled={!isDraggable}

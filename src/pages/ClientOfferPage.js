@@ -26,7 +26,7 @@ class ClientOfferPage extends Component {
     return (
       <main className='page client-offer-page flex flex-column'>
         { mediation && <MediationCardBack {...mediation} /> }
-        { offer && offerId !== '0' && <OfferInfo {...offer} /> }
+        { offer && offerId !== '0' && <OfferInfo /> }
       </main>
     )
   }

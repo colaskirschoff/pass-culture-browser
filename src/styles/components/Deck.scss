@@ -1,15 +1,17 @@
 .deck {
   height: 100vh;
   overflow: hidden;
-  .deck-gradient {
-    height: 0;
-    margin-top: 106.4%;
-    padding-bottom: 26.6%;
-    z-index: 100;
-    width: 100%;
-    position: relative
+  position: relative;
+  .react-draggable {
+    height: 100%;
+    position: relative;
+    transition-property: transform;
+    transition-timing-function: ease;
+    // width: 100%;
+    // overflow: hidden;
   }
-  &__board {
+  .board {
+    position: absolute;
     background-color: transparent;
     background-size: 100% auto;
     margin-top: 133%;
@@ -17,37 +19,46 @@
     z-index: 100;
     bottom: 0;
     top: 0;
-    .button {
-      padding: 0;
-      border: 0;
-      border-radius: 0;
-      background-color: transparent;
-      img {
-        width: 100%;
-      }
-      &.deck__board__before {
-        margin-left: 5.07%;
-      }
-      &.deck__board__after {
-        margin-right: 5.07%;
-      }
-      &.deck__board__before, &.deck__board__after {
-        margin-top: 3.10%;
-        width: 23.2%;
-      }
-      &.deck__board__to-recto {
-        z-index: 1100;
-        width: 11.73%;
-        margin-top: 3.10%;
-        margin-left: auto;
-        margin-right: auto;
+    .deck-gradient {
+      height: 50px;
+      top: -50px;
+      z-index: 100;
+      width: 100%;
+      position: relative
+    }
+    .controls {
+      display: flex;
+      justify-content: space-around;
+      .previous, .next, .to-recto {
+        padding: 0;
+        border: 0;
+        border-radius: 0;
+        background-color: transparent;
+        outline: 0;
         img {
-          width: 60%; //TODO: calculate actual percentage
+          width: 100%;
+        }
+        &.previous {
+          margin-left: 5.07%;
+        }
+        &.next {
+          margin-right: 5.07%;
+        }
+        &.previous, &.next {
+          margin-top: 3.10%;
+          width: 23.2%;
+        }
+        &.to-recto {
+          z-index: 1100;
+          width: 11.73%;
+          margin-top: 3.10%;
+          margin-left: auto;
+          margin-right: auto;
+          img {
+            width: 60%; //TODO: calculate actual percentage
+          }
         }
       }
     }
-  }
-  &__to-verso {
-    z-index: 1100;
   }
 }

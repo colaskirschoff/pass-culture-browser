@@ -5,11 +5,12 @@
   overflow: hidden;
   position: relative;
   z-index: 0;
-  &--small {
-    border-radius: $border-radius;
-  }
-  &--loading {
+
+  &.loading {
     height: 50%;
+    display: flex;
+    align-items: items-center;
+    justify-content: justify-center;
   }
   img {
     position: absolute;

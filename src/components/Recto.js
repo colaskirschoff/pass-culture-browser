@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { compose } from 'redux'
 import get from 'lodash.get';
 
-import RectoDebug from './RectoDebug'
+import Clue from './Clue'
 import Loading from './Loading'
 import withSelectors from '../hocs/withSelectors'
 import { getOffer } from '../selectors/offer'
@@ -24,12 +24,15 @@ const Recto = props => {
     : { backgroundImage: `url('${thumbUrl}')`}
   return (
     <div className='recto'>
-       <div className={classnames('card-background', {
-           'loading': isLoading
-         })} style={style}>
-        {isLoading && <Loading isForceActive />}
+      <div className='recto-wrapper'>
+        <div className={classnames('card-background', {
+             'loading': isLoading
+           })} style={style}>
+          {isLoading && <Loading isForceActive />}
+        </div>
+        <div className='thumb' style={style} />
       </div>
-      <img alt='thumb' draggable={false} src={thumbUrl} />
+      <Clue />
     </div>
   )
 }

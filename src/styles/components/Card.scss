@@ -21,4 +21,12 @@
   &.next {
     transform: translate(100vw, 0);
   }
+  .close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 10;
+    background: no-repeat;
+    border: none;
+  }
 }

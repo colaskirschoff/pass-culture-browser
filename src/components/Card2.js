@@ -8,6 +8,7 @@ import get from 'lodash.get';
 import Clue from './Clue'
 import Recto from './Recto'
 import Verso from './Verso'
+import Icon from './Icon'
 
 import { flip, unFlip } from '../reducers/navigation'
 
@@ -23,16 +24,14 @@ import { getThumbUrl } from '../selectors/thumbUrl'
 class Card extends Component {
   render () {
     return (
-      <div className={`card ${this.props.position}`} style={{backgroundColor: this.props.backgroundColor}}>
+        <div className={`card vertical-draggable ${this.props.position}`}>
+          {this.props.isFlipped && <button className='close' onClick={e => this.props.unFlip()}><Icon svg='ico-close' /></button>}
           <Recto userMediation={this.props.userMediation} />
-        { this.props.position === 'current' && <Clue />}
-        { this.props.position === 'current' && <Verso />}
-      </div>
+          { this.props.position === 'current' && <Verso />}
+        </div>
     )
   }
 }
-//        <Draggable axis='y'>
-//        </Draggable>
 
 Card.defaultProps = {
   isSetRead: true,
@@ -48,7 +47,8 @@ export default connect(
     const offer = getOffer(ownProps.userMediation)
     const source = getSource(mediation, offer)
     return ({
-      backgroundColor: getHeaderColor(source, mediation)
+      backgroundColor: getHeaderColor(source, mediation),
+      isFlipped: state.navigation.isFlipped,
     })
   },
   { flip, unFlip }

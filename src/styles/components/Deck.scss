@@ -2,11 +2,12 @@
   height: 100vh;
   overflow: hidden;
   position: relative;
-  .react-draggable {
+  .horizontal-draggable {
     height: 100%;
     position: relative;
     transition-property: transform;
     transition-timing-function: ease;
+    z-index: 2;
     &.no-transition {
       transition: unset !important;
     }
@@ -15,19 +16,21 @@
     position: absolute;
     background-color: transparent;
     background-size: 100% auto;
-    margin-top: 133%;
+    top: 75%;
     width: 100%;
-    z-index: 100;
     bottom: 0;
-    top: 0;
+    z-index: 2;
     .deck-gradient {
       height: 50px;
       top: -50px;
-      z-index: 100;
       width: 100%;
-      position: relative
+      position: relative;
     }
     .controls {
+      position: absolute;
+      top: 2rem;
+      left: 0;
+      right: 0;
       display: flex;
       justify-content: space-around;
       .previous, .next, .to-recto {

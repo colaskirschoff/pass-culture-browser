@@ -3,10 +3,9 @@
   left: 0;
   right: 0;
   transition: transform 250ms;
-  top: 0;
+  top: 25%;
   bottom: 0;
   z-index: 500;
-  padding-top: 50%;
   transform: translate(0, 100vh);
   &.flipped {
     transform: translate(0, 0);

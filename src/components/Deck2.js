@@ -1,12 +1,14 @@
-import Draggable from 'react-draggable'
 import React, { Component } from 'react'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
-import { withRouter } from "react-router-dom";
+import { withRouter } from 'react-router-dom';
 import withLogin from '../hocs/withLogin'
 
 import Card, { CURRENT } from './Card2'
 import Icon from './Icon'
+import Draggable from 'react-draggable'
+// import Draggable from './Draggable'
+import DoubleDraggable from './DoubleDraggable'
 import { ROOT_PATH } from '../utils/config';
 
 import { worker } from '../workers/dexie/register'
@@ -31,6 +33,10 @@ class Deck extends Component {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    console.log(this.$current)
+  }
+
   goToPrev = () => {
     const deckWidth = this.$deck.offsetWidth;
     this.setState({
@@ -40,9 +46,10 @@ class Deck extends Component {
       this.setState({
         transition: false,
         position: CENTER_POSITION,
+      }, () => {
+        const offer = getOffer(this.props.previousUserMediation)
+        this.props.history.push(`/decouverte/${offer.id}`);
       })
-      const offer = getOffer(this.props.previousUserMediation)
-      this.props.history.push(`/decouverte/${offer.id}`);
     }, this.props.transitionDuration)
   }
 
@@ -52,21 +59,34 @@ class Deck extends Component {
       position: {x: -deckWidth, y: 0}
     })
     setTimeout(() => {
+      console.log('stop transitions')
       this.setState({
         transition: false,
         position: CENTER_POSITION,
+      }, () => {
+        const offer = getOffer(this.props.nextUserMediation)
+        this.props.history.push(`/decouverte/${offer.id}`);
+        setTimeout(() => {
+          console.log('restart transitions')
+          this.setState({
+            transition: true,
+          })
+        })
       })
-      const offer = getOffer(this.props.nextUserMediation)
-      this.props.history.push(`/decouverte/${offer.id}`);
     }, this.props.transitionDuration)
   }
 
   onStop = (e, data) => {
     const deckWidth = this.$deck.offsetWidth;
-    if (this.props.previousUserMediation && data.x > deckWidth * this.props.slideRatio) {
+    const deckHeight = this.$deck.offsetHeight;
+    if (!this.props.isFlipped && this.props.previousUserMediation && data.x > deckWidth * this.props.horizontalSlideRatio) {
       this.goToPrev();
-    } else if (this.props.nextUserMediation && data.x < -deckWidth * this.props.slideRatio) {
+    } else if (!this.props.isFlipped && this.props.nextUserMediation && data.x < -deckWidth * this.props.horizontalSlideRatio) {
       this.goToNext();
+    } else if (data.y > deckHeight * this.props.verticalSlideRatio) {
+      this.props.unFlip();
+    } else if (data.y < -deckHeight * this.props.verticalSlideRatio) {
+      this.props.flip();
     }
   }
 
@@ -79,33 +99,33 @@ class Deck extends Component {
     } = this.props;
     return (
       <div className='deck' ref={$el => (this.$deck = $el)}>
-        <Draggable axis='x' onStop={this.onStop} position={this.state.position}>
+        <Draggable axis='exclude' position={this.state.position} onStop={this.onStop}>
           <div style={{
             transitionDuration: `${this.props.transitionDuration}ms`,
-          }} className={this.state.transition ? '' : 'no-transition'}>
+          }} className={`horizontal-draggable ${this.state.transition ? '' : 'no-transition'}`}>
             {previousUserMediation && <Card position='previous' userMediation={previousUserMediation} />}
-            <Card position='current' userMediation={userMediation} />
+            <Card ref={$el => this.$current = $el} position='current' userMediation={userMediation} />
             {nextUserMediation && <Card position='next' userMediation={nextUserMediation} />}
+            <div className='board'
+              style={{ backgroundImage: `url('${ROOT_PATH}/mosaic-w.svg')`, backgroundColor: headerColor }} >
+              <div className='deck-gradient' style={{background: `linear-gradient(transparent, ${headerColor})`}} />
+                <div className='controls'>
+                  <button className={`previous ${previousUserMediation ? '' : 'hidden'}`}
+                    onClick={this.goToPrev}>
+                      <Icon svg='ico-prev-w' />
+                  </button>
+                  <button className='to-recto'
+                    onClick={e => this.props.flip()}>
+                    <Icon svg='ico-slideup-w' />
+                  </button>
+                  <button className={`next ${nextUserMediation ? '' : 'hidden'}`}
+                    onClick={this.goToNext}>
+                    <Icon svg='ico-prev-w' className='flip-horiz' />
+                  </button>
+                </div>
+              </div>
           </div>
         </Draggable>
-        <div className='board'
-          style={{ backgroundImage: `url('${ROOT_PATH}/mosaic-w.svg')`, backgroundColor: headerColor }} >
-          <div className='deck-gradient' style={{background: `linear-gradient(transparent, ${headerColor})`}} />
-          <div className='controls'>
-            <button className={`previous ${previousUserMediation ? '' : 'hidden'}`}
-              onClick={this.goToPrev}>
-                <Icon svg='ico-prev-w' />
-            </button>
-            <button className='to-recto'
-              onClick={e => this.props.flip()}>
-              <Icon svg='ico-slideup-w' />
-            </button>
-            <button className={`next ${nextUserMediation ? '' : 'hidden'}`}
-              onClick={this.goToNext}>
-              <Icon svg='ico-prev-w' className='flip-horiz' />
-            </button>
-          </div>
-        </div>
       </div>
     )
   }
@@ -113,7 +133,8 @@ class Deck extends Component {
 
 Deck.defaultProps = {
   deckKey: 0,
-  slideRatio: 0.2,
+  horizontalSlideRatio: 0.2,
+  verticalSlideRatio: 0.1,
   flipRatio: 0.25,
   isDebug: false,
   readTimeout: 3000,
@@ -131,6 +152,7 @@ export default compose(
       previousUserMediation: selectPreviousUserMediation(state),
       nextUserMediation: selectNextUserMediation(state),
       headerColor: selectHeaderColor(state),
+      isFlipped: state.navigation.isFlipped,
     }),
     { flip, unFlip }
   )

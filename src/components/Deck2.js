@@ -99,33 +99,35 @@ class Deck extends Component {
     } = this.props;
     return (
       <div className='deck' ref={$el => (this.$deck = $el)}>
-        <Draggable axis='exclude' position={this.state.position} onStop={this.onStop}>
+        <Draggable axis='exclude' position={this.state.position} onStop={this.onStop} bounds={{top: -100, bottom: 100}}>
           <div style={{
             transitionDuration: `${this.props.transitionDuration}ms`,
-          }} className={`horizontal-draggable ${this.state.transition ? '' : 'no-transition'}`}>
+          }} className={`${this.state.transition ? '' : 'no-transition'}`}>
             {previousUserMediation && <Card position='previous' userMediation={previousUserMediation} />}
             <Card ref={$el => this.$current = $el} position='current' userMediation={userMediation} />
             {nextUserMediation && <Card position='next' userMediation={nextUserMediation} />}
-            <div className='board'
-              style={{ backgroundImage: `url('${ROOT_PATH}/mosaic-w.svg')`, backgroundColor: headerColor }} >
-              <div className='deck-gradient' style={{background: `linear-gradient(transparent, ${headerColor})`}} />
-                <div className='controls'>
-                  <button className={`previous ${previousUserMediation ? '' : 'hidden'}`}
-                    onClick={this.goToPrev}>
-                      <Icon svg='ico-prev-w' />
-                  </button>
-                  <button className='to-recto'
-                    onClick={e => this.props.flip()}>
-                    <Icon svg='ico-slideup-w' />
-                  </button>
-                  <button className={`next ${nextUserMediation ? '' : 'hidden'}`}
-                    onClick={this.goToNext}>
-                    <Icon svg='ico-prev-w' className='flip-horiz' />
-                  </button>
-                </div>
-              </div>
           </div>
         </Draggable>
+        <div className='board'>
+          <div className='deck-gradient' style={{
+            backgroundColor: headerColor,
+            background: `linear-gradient(to bottom, rgba(0, 0, 0,0) 0%,rgba(0, 0, 0,0) 20%,${headerColor} 30%,${headerColor} 100%)`,
+          }}><div className='mosaic' style={{backgroundImage: `url('${ROOT_PATH}/mosaic-w.svg')`}} /></div>
+          <div className='controls'>
+            <button className={`previous ${previousUserMediation ? '' : 'hidden'}`}
+              onClick={this.goToPrev}>
+                <Icon svg='ico-prev-w' />
+            </button>
+            <button className='to-recto'
+              onClick={e => this.props.flip()}>
+              <Icon svg='ico-slideup-w' />
+            </button>
+            <button className={`next ${nextUserMediation ? '' : 'hidden'}`}
+              onClick={this.goToNext}>
+              <Icon svg='ico-prev-w' className='flip-horiz' />
+            </button>
+          </div>
+        </div>
       </div>
     )
   }

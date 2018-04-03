@@ -24,10 +24,14 @@ import { getThumbUrl } from '../selectors/thumbUrl'
 class Card extends Component {
   render () {
     return (
-        <div className={`card vertical-draggable ${this.props.position}`}>
+        <div className={`card ${this.props.position}`}>
           {this.props.isFlipped && <button className='close' onClick={e => this.props.unFlip()}><Icon svg='ico-close' /></button>}
           <Recto userMediation={this.props.userMediation} />
-          { this.props.position === 'current' && <Verso />}
+          {this.props.position === 'current' && (
+            <Portal node={document.getElementById('deck')}>
+              <Verso />
+            </Portal>
+          )}
         </div>
     )
   }

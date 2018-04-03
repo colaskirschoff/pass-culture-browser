@@ -5811,7 +5811,7 @@ react-dom@^16.2.0:
 
 react-draggable@augnustin/react-draggable:
   version "3.0.5"
-  resolved "https://codeload.github.com/augnustin/react-draggable/tar.gz/041f74062a1c1e4812ce8636f150a3e2406b573d"
+  resolved "https://codeload.github.com/augnustin/react-draggable/tar.gz/f1af30ea6395e95d9339623eede5c240b5628a3a"
   dependencies:
     classnames "^2.2.5"
     prop-types "^15.6.0"

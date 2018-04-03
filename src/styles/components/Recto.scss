@@ -6,8 +6,9 @@
 
   .recto-wrapper {
     width: 100%;
-    height: 75%;
+    height: 80%;
     position: relative;
+    overflow: hidden;
   }
 
   .card-background {
@@ -29,7 +30,7 @@
     bottom: 0;
     left: 0;
     right: 0;
-    height: 100%;
+    height: 93%;
     width: 100%;
     background-size: contain;
     background-position: center;

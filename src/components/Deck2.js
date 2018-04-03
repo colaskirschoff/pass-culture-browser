@@ -33,61 +33,78 @@ class Deck extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    console.log(this.$current)
-  }
-
   goToPrev = () => {
-    const deckWidth = this.$deck.offsetWidth;
-    this.setState({
-      position: {x: deckWidth, y: 0}
-    })
-    setTimeout(() => {
-      this.setState({
-        transition: false,
-        position: CENTER_POSITION,
-      }, () => {
-        const offer = getOffer(this.props.previousUserMediation)
-        this.props.history.push(`/decouverte/${offer.id}`);
-      })
-    }, this.props.transitionDuration)
+    if (!this.props.previousUserMediation) return;
+    const offer = getOffer(this.props.previousUserMediation)
+    this.props.history.push(`/decouverte/${offer.id}`);
+
+    // const deckWidth = this.$deck.offsetWidth;
+    // this.setState({
+    //   position: {x: deckWidth, y: 0}
+    // })
+    // setTimeout(() => {
+    //   this.setState({
+    //     transition: false,
+    //     position: CENTER_POSITION,
+    //   }, () => {
+    //   })
+    // }, this.props.transitionDuration)
   }
 
   goToNext = () => {
-    const deckWidth = this.$deck.offsetWidth;
-    this.setState({
-      position: {x: -deckWidth, y: 0}
-    })
-    setTimeout(() => {
-      console.log('stop transitions')
+    if (!this.props.nextUserMediation) return;
+    const offer = getOffer(this.props.nextUserMediation)
+    this.props.history.push(`/decouverte/${offer.id}`);
+
+    // const deckWidth = this.$deck.offsetWidth;
+    // this.setState({
+    //   position: {x: -deckWidth, y: 0}
+    // })
+    // setTimeout(() => {
+    //   console.log('stop transitions')
+    //   this.setState({
+    //     transition: false,
+    //     position: CENTER_POSITION,
+    //   }, () => {
+    //     setTimeout(() => {
+    //       console.log('restart transitions')
+    //       this.setState({
+    //         transition: true,
+    //       })
+    //     })
+    //   })
+    // }, this.props.transitionDuration)
+  }
+
+  componentWillReceiveProps = (nextProps) => {
+    if (nextProps.nextUserMediation !== this.props.nextUserMediation && nextProps.previousUserMediation !== this.props.previousUserMediation) {
+      console.log('retransition')
       this.setState({
-        transition: false,
-        position: CENTER_POSITION,
-      }, () => {
-        const offer = getOffer(this.props.nextUserMediation)
-        this.props.history.push(`/decouverte/${offer.id}`);
-        setTimeout(() => {
-          console.log('restart transitions')
-          this.setState({
-            transition: true,
-          })
-        })
+        transition: true,
       })
-    }, this.props.transitionDuration)
+    }
   }
 
   onStop = (e, data) => {
     const deckWidth = this.$deck.offsetWidth;
     const deckHeight = this.$deck.offsetHeight;
-    if (!this.props.isFlipped && this.props.previousUserMediation && data.x > deckWidth * this.props.horizontalSlideRatio) {
+    console.log('go to prev?', (data.x % deckWidth)/deckWidth);
+    if (!this.props.isFlipped && this.props.previousUserMediation && (data.x % deckWidth)/deckWidth > (this.props.horizontalSlideRatio)) {
       this.goToPrev();
-    } else if (!this.props.isFlipped && this.props.nextUserMediation && data.x < -deckWidth * this.props.horizontalSlideRatio) {
+    } else if (!this.props.isFlipped && this.props.nextUserMediation && (data.x % deckWidth)/deckWidth < -this.props.horizontalSlideRatio) {
       this.goToNext();
     } else if (data.y > deckHeight * this.props.verticalSlideRatio) {
       this.props.unFlip();
     } else if (data.y < -deckHeight * this.props.verticalSlideRatio) {
       this.props.flip();
     }
+  }
+
+  onStart = e => {
+    console.log('no transition')
+    this.setState({
+      transition: false,
+    })
   }
 
   render () {
@@ -97,9 +114,10 @@ class Deck extends Component {
       userMediation,
       headerColor,
     } = this.props;
+    console.log(userMediation && userMediation.index)
     return (
       <div className='deck' ref={$el => (this.$deck = $el)}>
-        <Draggable axis='exclude' position={this.state.position} onStop={this.onStop} bounds={{top: -100, bottom: 100}}>
+        <Draggable axis='exclude' position={{x: -1 * (this.$deck && this.$deck.offsetWidth * (userMediation || {}).index), y: 0}} onStart={this.onStart} onStop={this.onStop} bounds={{top: -100, bottom: 100}}>
           <div style={{
             transitionDuration: `${this.props.transitionDuration}ms`,
           }} className={`${this.state.transition ? '' : 'no-transition'}`}>
@@ -150,6 +168,7 @@ export default compose(
   withRouter,
   connect(
     state => ({
+      loopLength: state.data.userMediations && state.data.userMediations.length,
       userMediation: selectUserMediation(state),
       previousUserMediation: selectPreviousUserMediation(state),
       nextUserMediation: selectNextUserMediation(state),

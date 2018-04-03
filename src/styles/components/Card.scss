@@ -1,6 +1,7 @@
 .card {
   cursor: pointer;
   height: 100%;
+  width: 100%;
   position: absolute;
   top: 0;
   bottom: 0;
@@ -15,12 +16,16 @@
   -o-user-select: none;
   user-select: none;
 
-  &.previous {
-    transform: translate(-100vw, 0);
-  }
-  &.next {
-    transform: translate(100vw, 0);
-  }
+  // &.previous {
+  //   // transform: translate(-100vw, 0);
+  //   right: 100%;
+  //   left: -100%;
+  // }
+  // &.next {
+  //   // transform: translate(100vw, 0);
+  //   left: 100%;
+  //   right: -100%;
+  // }
   .close {
     position: absolute;
     top: 1rem;

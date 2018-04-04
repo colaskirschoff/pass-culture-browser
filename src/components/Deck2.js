@@ -100,7 +100,6 @@ class Deck extends Component {
   }
 
   onStart = e => {
-    console.log('youpi')
     this.setState({
       transition: false,
     })
@@ -113,7 +112,6 @@ class Deck extends Component {
       userMediation,
       headerColor,
     } = this.props;
-    console.log(userMediation && userMediation.index)
     return (
       <div className='deck' ref={$el => (this.$deck = $el)} id='deck'>
         <Draggable axis='exclude' position={{x: -1 * (this.$deck && this.$deck.offsetWidth * (userMediation || {}).index), y: 0}} onStart={this.onStart} onStop={this.onStop} bounds={{top: -100, bottom: 100}}>

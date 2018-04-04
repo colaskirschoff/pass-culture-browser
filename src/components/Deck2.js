@@ -78,7 +78,6 @@ class Deck extends Component {
 
   componentWillReceiveProps = (nextProps) => {
     if (nextProps.nextUserMediation !== this.props.nextUserMediation && nextProps.previousUserMediation !== this.props.previousUserMediation) {
-      console.log('retransition')
       this.setState({
         transition: true,
       })
@@ -101,7 +100,7 @@ class Deck extends Component {
   }
 
   onStart = e => {
-    console.log('no transition')
+    console.log('youpi')
     this.setState({
       transition: false,
     })
@@ -116,7 +115,7 @@ class Deck extends Component {
     } = this.props;
     console.log(userMediation && userMediation.index)
     return (
-      <div className='deck' ref={$el => (this.$deck = $el)}>
+      <div className='deck' ref={$el => (this.$deck = $el)} id='deck'>
         <Draggable axis='exclude' position={{x: -1 * (this.$deck && this.$deck.offsetWidth * (userMediation || {}).index), y: 0}} onStart={this.onStart} onStop={this.onStop} bounds={{top: -100, bottom: 100}}>
           <div style={{
             transitionDuration: `${this.props.transitionDuration}ms`,
@@ -129,7 +128,7 @@ class Deck extends Component {
         <div className='board'>
           <div className='deck-gradient' style={{
             backgroundColor: headerColor,
-            background: `linear-gradient(to bottom, rgba(0, 0, 0,0) 0%,rgba(0, 0, 0,0) 20%,${headerColor} 30%,${headerColor} 100%)`,
+            background: `linear-gradient(to bottom, rgba(0, 0, 0,0) 0%,${headerColor} 35%,${headerColor} 100%)`,
           }}><div className='mosaic' style={{backgroundImage: `url('${ROOT_PATH}/mosaic-w.svg')`}} /></div>
           <div className='controls'>
             <button className={`previous ${previousUserMediation ? '' : 'hidden'}`}

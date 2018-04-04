@@ -9,34 +9,34 @@ import Loading from './Loading'
 import withSelectors from '../hocs/withSelectors'
 import { getOffer } from '../selectors/offer'
 import { getMediation } from '../selectors/mediation'
+import selectOffer from '../selectors/offer'
 import { getSource } from '../selectors/source'
 import { getThumbUrl } from '../selectors/thumbUrl'
+import selectUserMediation from '../selectors/userMediation'
 import { IS_DEV } from '../utils/config'
 
 const Recto = props => {
-  const {
-    id,
+  const { offer,
     isLoading,
     thumbUrl
   } = props
   const style = isLoading
     ? { backgroundColor: 'black' }
-    : { backgroundImage: `url('${thumbUrl}')`}
+    : { backgroundImage: `url('${thumbUrl}')` }
   return (
     <div className='recto'>
-      <div className='recto-wrapper'>
-        <div className={classnames('card-background', {
-             'loading': isLoading
-           })} style={style}>
-          {isLoading && <Loading isForceActive />}
-        </div>
-        <div className='thumb' style={style} />
+      <div className={classnames('card-background', {
+           'loading': isLoading
+         })} style={style}>
+        {isLoading && <Loading isForceActive />}
       </div>
+      <img alt='thumb' className='thumb'
+        draggable={false}
+        src={thumbUrl} />
       <Clue />
     </div>
   )
 }
-
 
 export default connect(
   (state, ownProps) => {

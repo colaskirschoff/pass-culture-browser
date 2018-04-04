@@ -7,11 +7,13 @@ export const IS_PROD = !IS_DEV
 
 export const NEW = '_new_'
 
-export const API_URL = IS_DEV ? 'http://localhost'
-                              : 'https://api.passculture.beta.gouv.fr'
-
-export const BROWSER_URL = IS_DEV ? 'http://localhost:3000'
-                                  : 'https://app.passculture.beta.gouv.fr'
+var CALCULATED_API_URL
+if (window.cordova) {
+  CALCULATED_API_URL = 'https://api.passculture.beta.gouv.fr' // This will be replaced by 'yarn pgbuild' for staging
+} else {
+  CALCULATED_API_URL = IS_DEV ? 'http://localhost' : 'https://'+document.location.host.replace('app', 'api')
+}
+export const API_URL = CALCULATED_API_URL
 
 export const THUMBS_URL = IS_DEV
   ? `${API_URL}/static/object_store_data/thumbs`

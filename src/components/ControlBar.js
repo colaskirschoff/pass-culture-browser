@@ -8,6 +8,7 @@ import { requestData } from '../reducers/data'
 import { showModal } from '../reducers/modal'
 import Icon from './Icon'
 import Booking from './Booking'
+import Price from './Price'
 import selectBooking from '../selectors/booking'
 import selectOffer from '../selectors/offer'
 import selectUserMediation from '../selectors/userMediation'
@@ -29,13 +30,14 @@ class ControlBar extends Component {
   }
 
   render () {
+    const { isFavorite, offer } = this.props
     return (
       <ul className='control-bar'>
         <li><small className='pass-label'>Mon pass</small><span className='pass-value'>0€</span></li>
         <li>
           <button className='button button--secondary'
             onClick={e => this.onClickFavorite(e)} >
-            <Icon svg={this.props.isFavorite ? 'ico-like-w' : 'ico-like-w'} />
+            <Icon svg={isFavorite ? 'ico-like-w' : 'ico-like-w'} />
           </button>
         </li>
         <li>
@@ -53,7 +55,7 @@ class ControlBar extends Component {
           ) : (
             <button className='button button--primary button--go'
               onClick={e => this.props.showModal(<Booking />, {fullscreen: true, maskColor: 'transparent', hasCloseButton: false})} >
-              <span className='price'>{`${get(this.props, 'offer.price')}€`}</span>
+              {offer && <Price value={offer.price} />}
               J'y vais!
             </button>
           )}

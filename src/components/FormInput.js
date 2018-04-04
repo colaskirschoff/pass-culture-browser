@@ -9,32 +9,49 @@ class FormInput extends Component {
   constructor (props) {
     super (props)
     this.state = { localValue: null }
-    this.handleDebouncedMergeForm = debounce(
-      this.handleMergeForm,
+    this.onDebouncedMergeForm = debounce(
+      this.onMergeForm,
       props.debounceTimeout
     )
   }
   onChange = event => {
+    const { type } = this.props
     event.persist()
-    this.handleDebouncedMergeForm(event)
+    this.onDebouncedMergeForm(event)
+    if (type === 'checkbox' || type === 'radio' ) {
+      return
+    }
     this.setState({ localValue: event.target.value })
   }
-  handleMergeForm = ({ target: { value } }) => {
-    const { collectionName, entityId, mergeForm, name, type } = this.props
-    // be sure to cast to the good type
-    const mergedValue = type === 'number'
-      ? Number(value)
-      : value
+  onMergeForm = event => {
+    const { target: { checked, value } } = event
+    const { collectionName,
+      defaultValue,
+      entityId,
+      mergeForm,
+      name,
+      type
+    } = this.props
+    let mergedValue
+    if (type === 'checkbox' || type === 'radio' ) {
+      mergedValue = checked ? ( defaultValue || true ) : false
+    } else if (type === 'number') {
+      mergedValue = Number(value)
+    } else {
+      mergedValue = value
+    }
     // merge
     mergeForm(collectionName, entityId, name, mergedValue)
   }
   componentWillMount () {
     // fill automatically the form when it is a NEW POST action
     const { defaultValue, entityId } = this.props
-    defaultValue && entityId === NEW && this.handleMergeForm(defaultValue)
+    defaultValue && entityId === NEW &&
+      this.onMergeForm({ target : { value : defaultValue } })
   }
   render () {
-    const { className,
+    const {
+      className,
       defaultValue,
       id,
       placeholder,
@@ -44,17 +61,17 @@ class FormInput extends Component {
     } = this.props
     const { localValue } = this.state
     return (
-        <input className={className || 'input'}
-          id={id}
-          onChange={this.onChange}
-          placeholder={placeholder}
-          autoComplete={autoComplete}
-          type={type}
-          value={
-            localValue !== null
-            ? localValue
-            : value || defaultValue || ''
-          } />
+      <input autoComplete={autoComplete}
+        className={className || 'input'}
+        id={id}
+        onChange={this.onChange}
+        placeholder={placeholder}
+        type={type}
+        value={
+          localValue !== null
+          ? localValue
+          : value || defaultValue || ''
+        } />
     )
   }
 }

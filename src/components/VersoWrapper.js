@@ -1,6 +1,6 @@
+import get from 'lodash.get'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import get from 'lodash.get';
 
 import ControlBar from './ControlBar'
 

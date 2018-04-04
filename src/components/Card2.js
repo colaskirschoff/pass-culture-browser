@@ -25,8 +25,6 @@ class Card extends Component {
   render () {
     return (
         <div className={`card ${this.props.position}`} style={{
-          // left: `${((this.props.userMediation || {}).index) * 100}%`,
-          // right: `-${((this.props.userMediation || {}).index) * 100}%`,
           transform: `translate(${((this.props.userMediation || {}).index) * 100}vw, 0)`,
         }}>
           {this.props.isFlipped && <button className='close' onClick={e => this.props.unFlip()}><Icon svg='ico-close' /></button>}

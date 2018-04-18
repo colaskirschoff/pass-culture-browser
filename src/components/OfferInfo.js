@@ -53,7 +53,7 @@ class OfferInfo extends Component {
             <p>{infos.what}</p>
           </div>
         )}
-        { infos.when && (
+        { infos.when && (infos.when.length > 0) && (
           <div>
             <h3>Quand ?</h3>
             <ul className='dates-info'>

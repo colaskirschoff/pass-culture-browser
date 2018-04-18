@@ -64,6 +64,14 @@ class OfferInfo extends Component {
               ))}
             </ul>
           </div>
+        ) || (
+          <div>
+            <h3>Quand ?</h3>
+            <ul className='dates-info'>
+                <li>Du mardi au vendredi de 9h à 19h.</li>
+                <li>Le samedi de 9h à 12h et de 13h30 à 19h30.</li>
+            </ul>
+          </div>
         )}
         { infos.where.name && infos.where.address && (
           <div>

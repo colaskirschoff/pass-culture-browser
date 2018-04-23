@@ -10,7 +10,9 @@ const InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
 const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
 const eslintFormatter = require('react-dev-utils/eslintFormatter');
 const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
+
 const paths = require('./paths');
+const RedirectPlugin =  require('./redirect')
 const getClientEnvironment = require('./env');
 
 // Webpack uses `publicPath` to determine where the app is being served from.
@@ -299,6 +301,9 @@ module.exports = {
     new ExtractTextPlugin({
       filename: cssFilename,
     }),
+    // Add generic redirects for netlify which work with everything routed to
+  	// index.htm and relative paths to main.js and main.css for phonegap
+    new RedirectPlugin(),
     // Generate a manifest file which contains a mapping of all asset filenames
     // to their corresponding output file so that tools can pick it up without
     // having to parse `index.html`.

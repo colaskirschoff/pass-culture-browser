@@ -3,6 +3,9 @@
   "version": "0.5.1",
   "private": true,
   "homepage": "/",
+  "config": {
+    "production": "false"
+  },
   "engines": {
     "node": "8.12.0",
     "npm": "6.4.1",
@@ -134,7 +137,7 @@
   },
   "scripts": {
     "analyze": "source-map-explorer build/static/js/main.*",
-    "build": "yarn config set production false && node scripts/build.js",
+    "build": "node scripts/build.js",
     "ngrok": "ngrok start -config=./ngrok.yml --all",
     "pgbuild": "yarn build && node scripts/pgbuild.js",
     "pgbuild-prod": "yarn build && PG_ENV=production node scripts/pgbuild.js",

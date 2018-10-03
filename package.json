@@ -134,7 +134,7 @@
   },
   "scripts": {
     "analyze": "source-map-explorer build/static/js/main.*",
-    "build": "node scripts/build.js",
+    "build": "yarn config set production false && node scripts/build.js",
     "ngrok": "ngrok start -config=./ngrok.yml --all",
     "pgbuild": "yarn build && node scripts/pgbuild.js",
     "pgbuild-prod": "yarn build && PG_ENV=production node scripts/pgbuild.js",

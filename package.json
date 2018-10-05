@@ -203,4 +203,3 @@
     "symlink-shared": "if [ -d \"../shared\" ]; then cd node_modules && rm -rf pass-culture-shared && ln -sf ../../shared pass-culture-shared && cd ../../shared && yarn run compile; fi"
   }
 }
-

@@ -1,6 +1,7 @@
 import React from 'react'
 import { Redirect } from 'react-router-dom'
 
+import ActivationPage from '../components/pages/ActivationPage'
 import BetaPage from '../components/pages/BetaPage'
 import MyBookingsPage from '../components/pages/MyBookingsPage'
 import DiscoveryPage from '../components/pages/discovery'
@@ -18,6 +19,11 @@ const routes = [
   {
     path: '/',
     render: () => <Redirect to="/beta" />,
+  },
+  {
+    component: ActivationPage,
+    path: '/activation',
+    title: 'Activation',
   },
   {
     component: BetaPage,

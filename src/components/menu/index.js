@@ -8,8 +8,9 @@ import { Transition } from 'react-transition-group'
 import { withRouter } from 'react-router-dom'
 
 import routes from '../../utils/routes'
+import MenuAvatar from './MenuAvatar'
 import MenuItem from './MenuItem'
-import MenuHeader from './MenuHeader'
+import MenuWallet from './MenuWallet'
 import MenuSignoutButton from './MenuSignoutButton'
 import { toggleMainMenu } from '../../reducers/menu'
 import { getMainMenuItems } from '../../utils/routes-utils'
@@ -70,7 +71,7 @@ class MainMenu extends React.PureComponent {
   )
 
   render() {
-    const { isVisible, user } = this.props
+    const { isVisible } = this.props
     return (
       <Transition in={isVisible} timeout={transitionDelay}>
         {status => (
@@ -86,7 +87,13 @@ class MainMenu extends React.PureComponent {
                   className="pc-theme-red is-relative"
                 >
                   {this.renderCloseButton()}
-                  <MenuHeader user={user} />
+                  <div
+                    id="main-menu-header"
+                    className="flex-columns is-relative py16 fs18"
+                  >
+                    <MenuAvatar />
+                    <MenuWallet />
+                  </div>
                   <nav id="main-menu-navigation" className="flex-rows mt16 pb0">
                     {this.renderNavigationLinks()}
                   </nav>
@@ -100,19 +107,13 @@ class MainMenu extends React.PureComponent {
   }
 }
 
-MainMenu.defaultProps = {
-  user: null,
-}
-
 MainMenu.propTypes = {
   dispatch: PropTypes.func.isRequired,
   isVisible: PropTypes.bool.isRequired,
-  user: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
 }
 
 const mapStateToProps = state => ({
   isVisible: state.menu,
-  user: state.user,
 })
 
 export default compose(

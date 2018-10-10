@@ -6,13 +6,13 @@ import PropTypes from 'prop-types'
 import { ROOT_PATH } from '../../../utils/config'
 import MonAvatar from './MonAvatar'
 import PageHeader from '../../layout/PageHeader'
-// import MonPassCulture from './MonPassCulture'
+import MonPassCulture from './MonPassCulture'
 import MesInformations from './MesInformations'
 import NavigationFooter from '../../layout/NavigationFooter'
 
 const BACKGROUND_IMAGE = `url('${ROOT_PATH}/mosaic-k.png')`
 
-const ProfileMainView = ({ config, user }) => (
+const ProfileMainView = ({ config }) => (
   <div
     id="profile-page-main-view"
     className="pc-page-view pc-theme-default flex-rows"
@@ -24,9 +24,9 @@ const ProfileMainView = ({ config, user }) => (
       style={{ backgroundImage: BACKGROUND_IMAGE }}
     >
       <div className="pc-scroll-container">
-        <MonAvatar user={user} />
-        {/* <MonPassCulture user={user} /> */}
-        <MesInformations user={user} fields={config} />
+        <MonAvatar />
+        <MonPassCulture />
+        <MesInformations fields={config} />
       </div>
     </main>
     <NavigationFooter theme="white" className="dotted-top-red" />
@@ -35,7 +35,6 @@ const ProfileMainView = ({ config, user }) => (
 
 ProfileMainView.propTypes = {
   config: PropTypes.array.isRequired,
-  user: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]).isRequired,
 }
 
 export default ProfileMainView

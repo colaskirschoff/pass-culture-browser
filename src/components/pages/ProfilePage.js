@@ -22,7 +22,7 @@ const parseRoutesWithComponent = () => {
   return routes
 }
 
-const ProfilePage = ({ isloaded, location, user }) => {
+const ProfilePage = ({ isloaded, location }) => {
   const routes = parseRoutesWithComponent()
   const possibleRoutes = Object.keys(routes).join('|')
   return (
@@ -33,7 +33,7 @@ const ProfilePage = ({ isloaded, location, user }) => {
             exact
             path="/profil"
             key="route-profile-main-view"
-            render={() => <ProfileMainView user={user} config={config} />}
+            render={() => <ProfileMainView config={config} />}
           />
           <Route
             exact
@@ -52,7 +52,7 @@ const ProfilePage = ({ isloaded, location, user }) => {
               const Component = routes[view].component
               if (!Component) return null
               const { title } = routes[view]
-              return <Component {...routeProps} title={title} user={user} />
+              return <Component {...routeProps} title={title} />
             }}
           />
           <Route
@@ -75,7 +75,7 @@ ProfilePage.propTypes = {
 const mapStateToProps = state => {
   const user = state.user || false
   const isloaded = (user && user !== null) || typeof user === 'object'
-  return { isloaded, user }
+  return { isloaded }
 }
 
 export default compose(

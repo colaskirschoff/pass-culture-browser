@@ -2,6 +2,7 @@
   react/jsx-one-expression-per-line: 0 */
 import React from 'react'
 import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
 
 const jaugeHeight = 34
 const jaugePadding = 12
@@ -84,7 +85,9 @@ const MonPassCulture = ({ user }) => {
 }
 
 MonPassCulture.propTypes = {
-  user: PropTypes.object.isRequired,
+  user: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]).isRequired,
 }
 
-export default MonPassCulture
+const mapStateToProps = ({ user }) => ({ user })
+
+export default connect(mapStateToProps)(MonPassCulture)

@@ -180,9 +180,12 @@ const withProfileForm = (
     // injectées par le render de la route du react-router-dom
     history: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
+    user: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]).isRequired,
   }
 
-  return connect()(ProfilePasswordForm)
+  const mapStateToProps = ({ user }) => ({ user })
+
+  return connect(mapStateToProps)(ProfilePasswordForm)
 }
 
 export default withProfileForm

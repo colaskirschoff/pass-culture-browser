@@ -2,6 +2,7 @@
   react/jsx-one-expression-per-line: 0 */
 import React from 'react'
 import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 
 const EMPTY_FIELD_PLACEHOLDER = 'Non renseigné'
@@ -72,4 +73,6 @@ MesInformations.propTypes = {
   user: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]).isRequired,
 }
 
-export default MesInformations
+const mapStateToProps = ({ user }) => ({ user })
+
+export default connect(mapStateToProps)(MesInformations)

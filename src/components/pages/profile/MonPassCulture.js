@@ -3,7 +3,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
+
+import ActivationButton from '../../layout/buttons/ActivationButton'
 
 const jaugeHeight = 34
 const jaugePadding = 12
@@ -26,15 +27,6 @@ const getPercent = (expense, scale) => {
 }
 
 class MonPassCulture extends React.PureComponent {
-  renderActivationLink = () => (
-    <div className="mb16 mt18 text-center">
-      <Link to="/activation" className="is-block fs18 px24 py8">
-        <span className="is-block">Active votre</span>
-        <span className="is-block">porte-monnaie numérique</span>
-      </Link>
-    </div>
-  )
-
   renderWalletJauges = () => {
     const { user } = this.props
     const { expenses } = user
@@ -102,7 +94,11 @@ class MonPassCulture extends React.PureComponent {
           </span>
         </h3>
         {isWalletActivated && this.renderWalletJauges()}
-        {!isWalletActivated && this.renderActivationLink()}
+        {!isWalletActivated && (
+          <div className="mb16 mt18 text-center">
+            <ActivationButton />
+          </div>
+        )}
       </div>
     )
   }

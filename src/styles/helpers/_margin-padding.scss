@@ -19,7 +19,8 @@ $intSizes: (
   40,
   48,
   56,
-  60
+  60,
+  80
 );
 
 @each $intSize in $intSizes {

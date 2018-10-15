@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 
 const ActivationButton = ({ destination }) => (
-  <Link to={destination} className="button-activation">
+  <Link to={destination} className="button-activation text-center">
     <span className="is-block">Activer votre</span>
     <span className="is-block">porte-monnaie numérique</span>
   </Link>

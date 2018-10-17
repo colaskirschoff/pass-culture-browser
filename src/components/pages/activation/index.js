@@ -1,9 +1,9 @@
 /* eslint
   react/jsx-one-expression-per-line: 0 */
 import React from 'react'
-import { ROOT_PATH } from '../../utils/config'
-import PageHeader from '../layout/PageHeader'
-import NavigationFooter from '../layout/NavigationFooter'
+import { ROOT_PATH } from '../../../utils/config'
+import PageHeader from '../../layout/PageHeader'
+import NavigationFooter from '../../layout/NavigationFooter'
 
 const PAGE_TITLE = 'Activation du porte-monnaie'
 const backgroundImage = `url('${ROOT_PATH}/mosaic-k.png')`

@@ -10,7 +10,8 @@ import ActivationButton from '../../layout/buttons/ActivationButton'
 class MonPassCulture extends React.PureComponent {
   render() {
     const { user } = this.props
-    const isWalletActivated = user.wallet_is_activated
+    let isWalletActivated = user.wallet_is_activated
+    isWalletActivated = false
     return (
       <div id="mon-pass-culture">
         <h3 className="dotted-bottom-primary pb8 px12">

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Redirect } from 'react-router-dom'
 
-import ActivationPage from '../components/pages/ActivationPage'
+import ActivationPage from '../components/pages/activation'
 import BetaPage from '../components/pages/BetaPage'
 import MyBookingsPage from '../components/pages/MyBookingsPage'
 import DiscoveryPage from '../components/pages/discovery'

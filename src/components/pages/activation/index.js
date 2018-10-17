@@ -4,13 +4,17 @@ import React from 'react'
 import { ROOT_PATH } from '../../../utils/config'
 import PageHeader from '../../layout/PageHeader'
 import NavigationFooter from '../../layout/NavigationFooter'
+import ClassicActivation from './ClassicActivation'
+import PartnerActivation from './PartnerActivation'
 
 const PAGE_TITLE = 'Activation du porte-monnaie'
 const backgroundImage = `url('${ROOT_PATH}/mosaic-k.png')`
 
-const activationBlockClass = 'rd4 mb24 px24 py18 is-white-text'
-const activationTitleClass = 'mb12 fs24 is-bold'
-const activationParagraphClass = 'mb12'
+const classes = {
+  block: 'rd4 mb24 px24 py18 is-white-text',
+  paragraph: 'mb12',
+  title: 'mb12 fs24 is-bold',
+}
 
 const ActivationPage = () => (
   <div id="activation-page" className="page is-relative flex-rows">
@@ -24,34 +28,8 @@ const ActivationPage = () => (
               créditer votre pass Culture de 500 &euro;
             </p>
           </div>
-          <div className={`pc-gradient ${activationBlockClass}`}>
-            <h3 className={activationTitleClass}>
-              <span>Activation Classique</span>
-            </h3>
-            <p className={activationParagraphClass}>
-              Activez votre porte-monnaie numérique de 500 &euro; avec
-              l&apos;équipe du pass Culture, lors des événements
-              d&apos;activation de votre région.
-            </p>
-            <p className={activationParagraphClass}>
-              Choisissez l&apos;événement d&apos;activation le plus proche de
-              chez vous.
-            </p>
-          </div>
-          <div className={`pc-gradient-green ${activationBlockClass}`}>
-            <h3 className={activationTitleClass}>
-              <span>Activation Partenaire</span>
-            </h3>
-            <p className={activationParagraphClass}>
-              Notre partenaire XYZ vous offre des bonbones et des nougats si
-              vous ouvrez un compte XYZ en plus de l&apos;activation de votre
-              porte-monnaie numérique de 500 &euro;
-            </p>
-            <p className={activationParagraphClass}>
-              Retrouvez ses équipes en agence, ou sur son stand lors de
-              l&apos;un des événements d&apos;activation suivants.
-            </p>
-          </div>
+          <ClassicActivation classes={classes} />
+          <PartnerActivation classes={classes} />
         </div>
       </div>
     </main>

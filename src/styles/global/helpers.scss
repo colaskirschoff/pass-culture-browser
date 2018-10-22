@@ -4,6 +4,14 @@
   display: block;
 }
 
+.is-inline-block {
+  // NOTE ->  Bulma contient une classe .is-inline avec un !important
+  // Ce qui empeche de creer une classe .is-inline
+  // on est obligé d'y ajouter !important
+  // qu'on devra suppr lorsqu'on suppr BulmaCSS
+  display: inline-block !important;
+}
+
 .is-absolute {
   position: absolute;
 }

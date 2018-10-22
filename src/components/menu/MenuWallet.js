@@ -4,11 +4,11 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
-import ActivationButton from '../layout/buttons/ActivationButton'
+import ActivationButton from './ActivationButton'
 
 const MenuWallet = ({ wallet, isActivated }) => (
-  <div className="column-account flex-center flex-rows items-center text-center">
-    <p className="fs30">
+  <div className="column-account text-center">
+    <p className="fs30 mb12">
       <span>Mon Pass</span>
     </p>
     <p id="main-menu-header-wallet-value">
@@ -18,7 +18,7 @@ const MenuWallet = ({ wallet, isActivated }) => (
           {`${wallet}€`}
         </span>
       )}
-      {/* Lien d'activation du compte utilisateur */}
+      {/* Bouton d'activation du compte user */}
       {!isActivated && <ActivationButton />}
     </p>
   </div>

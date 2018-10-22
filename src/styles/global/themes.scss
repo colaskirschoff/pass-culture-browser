@@ -11,6 +11,11 @@
   background-color: $ribbon-yellow;
 }
 
+.pc-background-dark-red,
+.pc-background-dark-primary {
+  background-color: $dark-primary;
+}
+
 .pc-theme-purple {
   @extend .is-white-text;
 

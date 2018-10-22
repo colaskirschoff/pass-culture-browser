@@ -1,9 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { compose } from 'redux'
+import { connect } from 'react-redux'
 import { Icon } from 'pass-culture-shared'
 import { withRouter, NavLink, matchPath } from 'react-router-dom'
 
-const noop = () => {}
+import { toggleMainMenu } from '../../reducers/menu'
 
 const renderLinkContent = (icon, title, styles) => (
   <React.Fragment>
@@ -20,8 +22,13 @@ const renderLinkContent = (icon, title, styles) => (
 )
 
 class MenuItem extends React.PureComponent {
+  toggleMainMenu = () => {
+    const { dispatch } = this.props
+    dispatch(toggleMainMenu())
+  }
+
   renderNavLink = opts => {
-    const { clickHandler, item, location } = this.props
+    const { item, location } = this.props
     const { title, disabled, icon, path } = item
     const currentpath = location.pathname
     const isactive = matchPath(currentpath, item)
@@ -31,7 +38,7 @@ class MenuItem extends React.PureComponent {
         key={path}
         to={pathto}
         disabled={disabled}
-        onClick={clickHandler}
+        onClick={this.toggleMainMenu}
         activeClassName={opts.activeClass}
         className={`navlink mx12 flex-columns ${opts.cssclass}`}
       >
@@ -41,14 +48,14 @@ class MenuItem extends React.PureComponent {
   }
 
   renderSimpleLink = opts => {
-    const { clickHandler, item } = this.props
+    const { item } = this.props
     const { title, icon, disabled, href } = item
     return (
       <a
         key={href}
         href={href}
         disabled={disabled}
-        onClick={clickHandler}
+        onClick={this.toggleMainMenu}
         className={`navlink mx12 flex-columns ${opts.cssclass}`}
       >
         {renderLinkContent(icon, title)}
@@ -72,14 +79,13 @@ class MenuItem extends React.PureComponent {
   }
 }
 
-MenuItem.defaultProps = {
-  clickHandler: noop,
-}
-
 MenuItem.propTypes = {
-  clickHandler: PropTypes.func,
+  dispatch: PropTypes.func.isRequired,
   item: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
 }
 
-export default withRouter(MenuItem)
+export default compose(
+  withRouter,
+  connect()
+)(MenuItem)

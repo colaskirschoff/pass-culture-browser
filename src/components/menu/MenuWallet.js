@@ -3,7 +3,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
+
+import ActivationButton from '../layout/buttons/ActivationButton'
 
 const MenuWallet = ({ wallet, isActivated }) => (
   <div className="column-account flex-center flex-rows items-center text-center">
@@ -18,16 +19,7 @@ const MenuWallet = ({ wallet, isActivated }) => (
         </span>
       )}
       {/* Lien d'activation du compte utilisateur */}
-      {!isActivated && (
-        <Link
-          to="/activation"
-          style={{ width: '155px' }}
-          className="pc-background-white is-primary-text"
-        >
-          <span className="is-block is-bold fs18">Activer votre</span>
-          <span className="is-block is-bold fs18">portefeuille</span>
-        </Link>
-      )}
+      {!isActivated && <ActivationButton />}
     </p>
   </div>
 )

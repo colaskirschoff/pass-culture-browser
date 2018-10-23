@@ -1,20 +1,14 @@
 /* eslint
   react/jsx-one-expression-per-line: 0 */
 import React from 'react'
+
 import { ROOT_PATH } from '../../../utils/config'
+import BlockActivation from './BlockActivation'
 import PageHeader from '../../layout/PageHeader'
 import NavigationFooter from '../../layout/NavigationFooter'
-import ClassicActivation from './ClassicActivation'
-import PartnerActivation from './PartnerActivation'
 
 const PAGE_TITLE = 'Activation du porte-monnaie'
 const backgroundImage = `url('${ROOT_PATH}/mosaic-k.png')`
-
-const classes = {
-  block: 'rd4 mb24 px24 py18 is-white-text',
-  paragraph: 'mb12',
-  title: 'mb12 fs24 is-bold',
-}
 
 const ActivationPage = () => (
   <div id="activation-page" className="page is-relative flex-rows">
@@ -23,13 +17,21 @@ const ActivationPage = () => (
       <div className="pc-scroll-container fs15">
         <div className="padded is-full-height" style={{ backgroundImage }}>
           <div className="mb24">
-            <p>
-              Vous avez deux possibilités pour activer votre porte-monnaie et
-              créditer votre pass Culture de 500 &euro;
+            <p className="pb12">
+              Rendez-vous sur les événements d&apos;activation de votre région
+              pour créditer votre porte-monnaie numérique de 500 € !
+            </p>
+            <p className="pb12">
+              Vous pourrez le faire auprès de l&apos;équipe du pass Culture, ou
+              en souscrivant une offre préférentielle auprès de notre
+              partenaire.
+            </p>
+            <p className="pb12">
+              Commencez par choisir un lieu proche de chez vous, et consultez le
+              programme !
             </p>
           </div>
-          <ClassicActivation classes={classes} />
-          <PartnerActivation classes={classes} />
+          <BlockActivation />
         </div>
       </div>
     </main>

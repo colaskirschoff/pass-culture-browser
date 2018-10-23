@@ -4,9 +4,9 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
-import ActivationButton from './ActivationButton'
+import ActivationButton from '../layout/buttons/ActivationButton'
 
-const MenuWallet = ({ wallet, isActivated }) => (
+const MenuWallet = ({ isActivated, wallet }) => (
   <div className="column-account text-center">
     <p className="fs30 mb12">
       <span>Mon Pass</span>
@@ -19,7 +19,12 @@ const MenuWallet = ({ wallet, isActivated }) => (
         </span>
       )}
       {/* Bouton d'activation du compte user */}
-      {!isActivated && <ActivationButton />}
+      {!isActivated && (
+        <ActivationButton className="fs18 pc-theme-dark-primary">
+          <span className="is-block">Activer votre</span>
+          <span className="is-block">porte-monnaie</span>
+        </ActivationButton>
+      )}
     </p>
   </div>
 )

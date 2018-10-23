@@ -8,7 +8,7 @@ import Footer from '../layout/Footer'
 import VersoInfo from './VersoInfo'
 import VersoWrapper from './VersoWrapper'
 import StaticVerso from './StaticVerso'
-import ActivationVerso from './ActivationVerso'
+import ActivationCard from './ActivationCard'
 import currentRecommendation from '../../selectors/currentRecommendation'
 
 const Verso = ({ recommendation, isFlipped }) => {
@@ -21,7 +21,7 @@ const Verso = ({ recommendation, isFlipped }) => {
     <div className={`verso ${(isFlipped && 'flipped') || ''}`}>
       <VersoWrapper className="with-padding-top">
         {isImage && <StaticVerso mediationId={mediation.id} />}
-        {isActivation && <ActivationVerso mediationId={mediation.id} />}
+        {isActivation && <ActivationCard mediationId={mediation.id} />}
         {!isTuto && <VersoInfo />}
       </VersoWrapper>
       <Footer borderTop colored={typeof tutoIndex !== 'number'} />

@@ -100,15 +100,24 @@ jobs:
           name: Build package to deploy
           # TODO: remove export CI, when no warning found during yarn build
           command: |
-            export API_URL=$BUILD_API_URL
-            export NODE_ENV=$BUILD_NODE_ENV
-            export THUMBS_URL=$BUILD_THUMBS_URL
+            if [ "${CIRCLE_BRANCH}" == "master" ];
+              export ENV=testing
+            else
+              export ENV=${CIRCLE_BRANCH}
+            fi
+            source "node_modules/pass-culture-shared/config/run_envs/$ENV"
             export CI=false
             yarn build
+            ./add_redirects.sh
       #- run:
       #    name: Deploy to Netlify
-      #    command:
-      #      netlify deploy -e testing -t "$NETLIFY_ACCESS_TOKEN" -p ./build
+      #    command: |
+      #      if [ "${CIRCLE_BRANCH}" == "master" ];
+      #        export ENV=testing
+      #      else
+      #        export ENV=${CIRCLE_BRANCH}
+      #      fi
+      #      netlify deploy -e "$ENV" -t "$NETLIFY_ACCESS_TOKEN" -p ./build
 
 workflows:
   version: 2
@@ -122,3 +131,5 @@ workflows:
             branches:
               only:
                 - master
+                - staging
+                - production

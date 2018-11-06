@@ -28,7 +28,6 @@ jobs:
             export PATH=$NVM_BIN:$PATH
             cd ~/pass-culture-main/webapp
             yarn install
-            yarn test:unit
       - run:
           name: Install dockerize
           command: |

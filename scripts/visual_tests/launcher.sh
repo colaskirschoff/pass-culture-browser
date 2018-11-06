@@ -13,9 +13,10 @@
 # Utiliser directement la ligne de commande testcafe
 # `./node_modules/.bin/testcafe [...options] --force`
 
+CWD=$(dirname "$0")
 BROWSER='chrome:headless'
 OUTPUT_PATH=testcafe/screenshots
-SCRIPT_FILE=scripts/tests/screenshots-compare.js
+SCRIPT_FILE=$CWD/screenshots-compare.js
 
 # case "$1" in
 #   -f|--force)
@@ -25,4 +26,4 @@ SCRIPT_FILE=scripts/tests/screenshots-compare.js
 #     ;;
 # esac
 
-./node_modules/.bin/testcafe $BROWSER $SCRIPT_FILE -s $OUTPUT_PATH
+testcafe $BROWSER $SCRIPT_FILE -s $OUTPUT_PATH

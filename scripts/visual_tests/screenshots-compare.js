@@ -63,15 +63,14 @@ async function compare(title, treshold = DEFAULT_TRESHOLD) {
     resemble(basepath)
       .compareTo(actualpath)
       .onComplete(async ({ misMatchPercentage, rawMisMatchPercentage }) => {
-        const reason = `${title} images are different`
         const humanPercent = misMatchPercentage
         const imagesAreSame = rawMisMatchPercentage <= treshold
         if (!imagesAreSame) {
           // await generateDiff(title, basepath, actualpath)
-          const err = new Error(`${reason} by ${humanPercent}%`)
-          return reject(err)
+          const reason = `Images are different by ${humanPercent}%`
+          return reject(new Error(reason))
         }
-        return resolve()
+        return resolve(true)
       })
   })
   return promise
@@ -79,7 +78,7 @@ async function compare(title, treshold = DEFAULT_TRESHOLD) {
 
 pages.forEach(({ delay, title, treshold, url }) => {
   const pageurl = `${ROOT_PATH}${url}`
-  fixture('Visual Regression Test').page(pageurl)
+  fixture(`Visual Tests: ${pageurl}`).page(pageurl)
   test(title, async t => {
     if (delay) await sleep(delay)
     const baseName = `${title}${baseExt}`
@@ -92,8 +91,6 @@ pages.forEach(({ delay, title, treshold, url }) => {
     const actualName = `${title}${actualExt}`
     await t.takeScreenshot(actualName)
     const reason = await compare(title, treshold)
-    if (reason) {
-      throw new Error(reason)
-    }
+    await t.expect(reason).ok()
   })
 })

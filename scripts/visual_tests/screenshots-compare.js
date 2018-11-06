@@ -16,11 +16,12 @@ import { ROOT_PATH } from '../../src/utils/config'
 const args = parseArgs(process.argv.slice(2))
 const useForce = args.force !== undefined
 
+const BASE_DIR = path.join(__dirname, '..', '..')
 const DEFAULT_TRESHOLD = 0
 const baseExt = '-base.png'
 // const diffExt = '-diff.png'
 const actualExt = '-actual.png'
-const outputPath = path.join(__dirname, '..', '..', 'testcafe', 'screenshots')
+const outputPath = path.join(BASE_DIR, 'testcafe', 'screenshots')
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms))
@@ -92,10 +93,7 @@ pages.forEach(({ delay, title, treshold, url }) => {
     await t.takeScreenshot(actualName)
     const reason = await compare(title, treshold)
     if (reason) {
-      // throw new Error(reason)
-      process.exit(1)
-    } else {
-      process.exit(0)
+      throw new Error(reason)
     }
   })
 })

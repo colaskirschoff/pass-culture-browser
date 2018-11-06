@@ -12,13 +12,13 @@ import { ROOT_PATH } from '../../src/utils/config'
 // const imageDiff = require('image-diff')
 
 // check si on doit regénéré les images de base
-// `testcafe [...options] --force`
+// Options: `--force`
 const args = parseArgs(process.argv.slice(2))
 const useForce = args.force !== undefined
 
-// const diffExt = '-diff.png'
 const DEFAULT_TRESHOLD = 0
 const baseExt = '-base.png'
+// const diffExt = '-diff.png'
 const actualExt = '-actual.png'
 const outputPath = path.join(__dirname, '..', '..', 'testcafe', 'screenshots')
 
@@ -91,6 +91,11 @@ pages.forEach(({ delay, title, treshold, url }) => {
     const actualName = `${title}${actualExt}`
     await t.takeScreenshot(actualName)
     const reason = await compare(title, treshold)
-    if (reason) throw new Error(reason)
+    if (reason) {
+      // throw new Error(reason)
+      process.exit(1)
+    } else {
+      process.exit(0)
+    }
   })
 })

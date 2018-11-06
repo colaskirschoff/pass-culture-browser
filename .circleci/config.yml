@@ -21,15 +21,6 @@ jobs:
       - checkout:
           path: ~/pass-culture-main/webapp
       - run:
-          name: Running Unit Tests
-          command: |
-            export PATH=${PATH:44}
-            export NVM_BIN=/usr/bin/nodejs
-            export PATH=$NVM_BIN:$PATH
-            cd ~/pass-culture-main/webapp
-            yarn install
-            yarn test:unit
-      - run:
           name: Install dockerize
           command: |
             wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
@@ -73,14 +64,6 @@ jobs:
             export PATH=$NVM_BIN:$PATH
             cd ~/pass-culture-main/webapp
             yarn test:visual
-      - run:
-          name: Running tests
-          command: |
-            export PATH=${PATH:44}
-            export NVM_BIN=/usr/bin/nodejs
-            export PATH=$NVM_BIN:$PATH
-            cd ~/pass-culture-main/webapp
-            yarn test:cafe
 
   deploy:
     docker:

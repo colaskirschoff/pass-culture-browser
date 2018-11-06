@@ -66,7 +66,7 @@ jobs:
             dockerize -wait http://localhost/health -timeout 3m -wait-retry-interval 5s
             ./pc sandbox --name=webapp
       - run:
-          name: Running tests
+          name: Running Visuals Tests
           command: |
             export PATH=${PATH:44}
             export NVM_BIN=/usr/bin/nodejs

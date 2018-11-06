@@ -17,11 +17,12 @@ BROWSER='chrome:headless'
 OUTPUT_PATH=testcafe/screenshots
 SCRIPT_FILE=scripts/tests/screenshots-compare.js
 
-case "$1" in
-  -f|--force)
-    ./node_modules/.bin/testcafe $BROWSER $SCRIPT_FILE -s $OUTPUT_PATH --force
-    ;;
-  *)
-    ./node_modules/.bin/testcafe $BROWSER $SCRIPT_FILE -s $OUTPUT_PATH
-    ;;
-esac
+# case "$1" in
+#   -f|--force)
+#     ./node_modules/.bin/testcafe $BROWSER $SCRIPT_FILE -s $OUTPUT_PATH --force
+#     ;;
+#   *)
+#     ;;
+# esac
+
+./node_modules/.bin/testcafe $BROWSER $SCRIPT_FILE -s $OUTPUT_PATH

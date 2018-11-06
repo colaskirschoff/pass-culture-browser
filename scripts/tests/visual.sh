@@ -25,5 +25,3 @@ case "$1" in
     ./node_modules/.bin/testcafe $BROWSER $SCRIPT_FILE -s $OUTPUT_PATH
     ;;
 esac
-
-exit 0;

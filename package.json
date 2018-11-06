@@ -145,7 +145,7 @@
     "start": "node scripts/start.js",
     "test:cafe": "testcafe 'chrome:headless' testcafe",
     "test:unit": "jest --env=jsdom",
-    "test:visual": "testcafe chrome:headless scripts/tests/screenshots-compare.js -s testcafe/screenshots",
+    "test:visual": "./scripts/visual.sh",
     "symlink-shared": "if [ -d \"../shared\" ]; then cd node_modules && rm -rf pass-culture-shared && ln -sf ../../shared pass-culture-shared && cd ../../shared && yarn run compile; fi"
   }
 }

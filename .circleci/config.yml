@@ -71,7 +71,7 @@ jobs:
             export NVM_BIN=/usr/bin/nodejs
             export PATH=$NVM_BIN:$PATH
             cd ~/pass-culture-main/webapp
-            mkdir -p tmp/screenshots
+            mkdir -p ./tmp/screenshots
             yarn test:visual
 
   deploy:

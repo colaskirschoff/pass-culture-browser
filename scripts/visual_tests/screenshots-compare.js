@@ -56,7 +56,7 @@ const generateBaseFile = useforce => async (t, title) => {
   // check si le fichier pour la base de comparaison existe
   const existingBaseFile = path.join(APP_BASE_DIR, BASE_FOLDER, filename)
   const baseExists = await fse.pathExists(existingBaseFile)
-  if (baseExists || !useforce) return
+  if (baseExists && !useforce) return
   await generateScreenshot(t, BASE_FOLDER, filename)
 }
 

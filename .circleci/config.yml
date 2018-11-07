@@ -71,12 +71,12 @@ jobs:
             export NVM_BIN=/usr/bin/nodejs
             export PATH=$NVM_BIN:$PATH
             cd ~/pass-culture-main/webapp
-            mkdir -p ~/tmp/screenshots
+            mkdir -p ~/pass-culture-main/webapp/tmp/screenshots
             yarn test:visual
       - store_artifacts:
-          path: ~/testcafe/screenshots
+          path: ~/pass-culture-main/webapp/testcafe/screenshots
       - store_artifacts:
-          path: ~/tmp/screenshots
+          path: ~/pass-culture-main/webapp/tmp/screenshots
 
   deploy:
     docker:

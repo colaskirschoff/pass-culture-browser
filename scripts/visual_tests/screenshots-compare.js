@@ -22,6 +22,7 @@ const baseExt = '-base.png'
 // const diffExt = '-diff.png'
 const actualExt = '-actual.png'
 const outputPath = path.join(BASE_DIR, 'testcafe', 'screenshots')
+const tmpOutputPath = path.join(BASE_DIR, 'tmp', 'screenshots')
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms))
@@ -59,7 +60,7 @@ async function compare(title, treshold = DEFAULT_TRESHOLD) {
   // FIXME -> use promise.then/catch/finally
   const promise = new Promise((resolve, reject) => {
     const basepath = path.join(outputPath, `${title}${baseExt}`)
-    const actualpath = path.join(outputPath, `${title}${actualExt}`)
+    const actualpath = path.join(tmpOutputPath, `${title}${actualExt}`)
     resemble(basepath)
       .compareTo(actualpath)
       .onComplete(async ({ misMatchPercentage, rawMisMatchPercentage }) => {
@@ -85,11 +86,14 @@ pages.forEach(({ delay, title, treshold, url }) => {
     // check si le fichier base existe
     const basePath = path.join(outputPath, baseName)
     const baseExists = await fse.pathExists(basePath)
-    // creation de l'image de base si elle n'existe pas
-    if (!baseExists || useForce) await t.takeScreenshot(baseName)
+    if (!baseExists || useForce) {
+      // creation de l'image de base si elle n'existe pas
+      await t.takeScreenshot(baseName)
+    }
     // compare l'image de base avec l'actuelle
     const actualName = `${title}${actualExt}`
-    await t.takeScreenshot(actualName)
+    const pattern = `${path.join(tmpOutputPath, actualName)}.png`
+    await t.takeScreenshot(actualName, false, pattern)
     const reason = await compare(title, treshold)
     await t.expect(reason).ok()
   })

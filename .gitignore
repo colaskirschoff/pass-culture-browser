@@ -42,6 +42,7 @@ env_file
 ngrok.yml
 tmp
 temp
+thumbnails/
 
 # Fontello Icon Fonts
 public/static/fontello/css/*

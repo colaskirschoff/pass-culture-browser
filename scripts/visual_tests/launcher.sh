@@ -26,4 +26,4 @@ SCRIPT_FILE=$CWD/screenshots-compare.js
 #     ;;
 # esac
 
-testcafe "chrome:headless" $CWD/screenshots-compare.js -s ./testcafe/screenshots
+testcafe "chrome:headless" $CWD/screenshots-compare.js -s ./

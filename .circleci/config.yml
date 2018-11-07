@@ -59,7 +59,7 @@ jobs:
             yarn start
           background: true
       - run:
-          name: Running Test Backend (Local Providers)
+          name: Running Sandbox
           command: |
             cd pass-culture-main
             dockerize -wait http://localhost/health -timeout 3m -wait-retry-interval 5s
@@ -74,7 +74,7 @@ jobs:
             mkdir -p ~/pass-culture-main/webapp/tmp/screenshots
             yarn test:visual
       - store_artifacts:
-          path: ~/pass-culture-main/webapp/testcafe
+          path: ~/pass-culture-main/webapp/tmp/screenshots
 
   deploy:
     docker:

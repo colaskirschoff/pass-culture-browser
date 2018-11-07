@@ -74,6 +74,8 @@ jobs:
             mkdir -p ~/tmp/screenshots
             yarn test:visual
       - store_artifacts:
+          path: ~/testcafe/screenshots
+      - store_artifacts:
           path: ~/tmp/screenshots
 
   deploy:

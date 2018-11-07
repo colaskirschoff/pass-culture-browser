@@ -13,17 +13,9 @@
 # Utiliser directement la ligne de commande testcafe
 # `./node_modules/.bin/testcafe [...options] --force`
 
+OUTPUT_PATH=./
 CWD=$(dirname "$0")
-BROWSER="chrome:headless"
-OUTPUT_PATH=testcafe/screenshots
+BROWSER='chrome:headless'
 SCRIPT_FILE=$CWD/screenshots-compare.js
 
-# case "$1" in
-#   -f|--force)
-#     ./node_modules/.bin/testcafe $BROWSER $SCRIPT_FILE -s $OUTPUT_PATH --force
-#     ;;
-#   *)
-#     ;;
-# esac
-
-testcafe "chrome:headless" $CWD/screenshots-compare.js -s ./
+testcafe $BROWSER $SCRIPT_FILE -s $OUTPUT_PATH $1

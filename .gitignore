@@ -40,11 +40,12 @@ netlifyctl-*
 docker-compose.yml
 env_file
 ngrok.yml
-tmp
-temp
-thumbnails/
 
 # Fontello Icon Fonts
 public/static/fontello/css/*
 public/static/fontello/font/*
 public/static/fontello/.fontello.session
+
+tmp
+temp
+thumbnails/

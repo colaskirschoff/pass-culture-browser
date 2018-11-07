@@ -1,24 +1,63 @@
 /* eslint
   import/no-extraneous-dependencies: 0 */
+/**
+ *
+ * Script de comparaison entre deux screenshots de l'application
+ * Base vs Actual
+ *
+ * Usages
+ * -----------
+ * `yarn test:visual [--force]`
+ *
+ * NOTE -> si testcafe inclus un --force dans sa ligne de commande
+ * cela peut rajouter des effets de bord/bugs
+ *
+ */
 import path from 'path'
 import fse from 'fs-extra'
 import parseArgs from 'minimist'
 // import resemble from 'resemblejs'
 
 // chargement de la configuration des pages a tester
-import { pages } from '../../testcafe/visuals.json'
+import pages from './config.json'
 import { ROOT_PATH } from '../../src/utils/config'
 
-// check si on doit regénérer les images de base
-// Options: `--force`
 const args = parseArgs(process.argv.slice(2))
-const USE_FORCE = args.force !== undefined
-const BASE_DIR = path.join(__dirname, '..', '..')
-
 // const DEFAULT_TRESHOLD = 0
+const USE_FORCE = args.force !== undefined
+const APP_BASE_DIR = path.join(__dirname, '..', '..')
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms))
+}
+
+// const actualExt = '-actual.png'
+// const tmpOutputPath = path.join(APP_BASE_DIR, 'tmp', 'screenshots')
+
+// const baseName = `${title}${baseExt}`
+// // check si le fichier base existe
+// const basePathPattern = path.join(outputPath, baseName)
+// console.log('basePathPattern', basePathPattern)
+// const baseExists = await fse.pathExists(basePathPattern)
+// if (!baseExists || USE_FORCE) {
+//   // creation de l'image de base si elle n'existe pas
+//   await t.takeScreenshot(baseName, false, outputPath)
+// }
+
+async function generateBaseFile(t, title, useforce) {
+  const baseExt = '-base.png'
+  const baseName = `${title}${baseExt}`
+  const basePath = path.join('testcafe', 'screenshots')
+  // check si le fichier base existe
+  const existingBaseFile = path.join(APP_BASE_DIR, basePath, baseName)
+  const baseExists = await fse.pathExists(existingBaseFile)
+  if (!baseExists || useforce) {
+    // si le fichier n'existe pas
+    // on crée l'image qui servira de base de comparaison
+    // NOTE -> testcafe a besoin d'un chemin relatif
+    const baseFile = path.join(basePath, baseName)
+    await t.takeScreenshot(baseFile)
+  }
 }
 
 // async function compare(files, treshold = DEFAULT_TRESHOLD) {
@@ -38,34 +77,6 @@ function sleep(ms) {
 //   })
 //   return promise
 // }
-
-// const actualExt = '-actual.png'
-// const tmpOutputPath = path.join(BASE_DIR, 'tmp', 'screenshots')
-
-// const baseName = `${title}${baseExt}`
-// // check si le fichier base existe
-// const basePathPattern = path.join(outputPath, baseName)
-// console.log('basePathPattern', basePathPattern)
-// const baseExists = await fse.pathExists(basePathPattern)
-// if (!baseExists || USE_FORCE) {
-//   // creation de l'image de base si elle n'existe pas
-//   await t.takeScreenshot(baseName, false, outputPath)
-// }
-
-async function generateBaseFile(t, title, useforce) {
-  const baseOutputPath = path.join('testcafe', 'screenshots')
-  const outputPath = path.join(BASE_DIR, baseOutputPath)
-  const baseExt = '-base.png'
-  const baseName = `${title}${baseExt}`
-  // check si le fichier base existe
-  let baseFile = path.join(outputPath, baseName)
-  const baseExists = await fse.pathExists(baseFile)
-  if (!baseExists || useforce) {
-    // creation de l'image de base si elle n'existe pas
-    baseFile = path.join(baseOutputPath, baseName)
-    await t.takeScreenshot(baseFile)
-  }
-}
 
 // const generateActualFile = () => {}
 

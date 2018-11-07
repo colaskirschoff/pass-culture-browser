@@ -44,20 +44,28 @@ function sleep(ms) {
 //   await t.takeScreenshot(baseName, false, outputPath)
 // }
 
-async function generateBaseFile(t, title, useforce) {
-  const baseExt = '-base.png'
-  const baseName = `${title}${baseExt}`
-  const basePath = path.join('testcafe', 'screenshots')
+const generateBaseFile = (t, title) => async useforce => {
+  const extension = '-base.png'
+  const filename = `${title}${extension}`
+  const folder = path.join('testcafe', 'screenshots')
   // check si le fichier base existe
-  const existingBaseFile = path.join(APP_BASE_DIR, basePath, baseName)
+  const existingBaseFile = path.join(APP_BASE_DIR, folder, filename)
   const baseExists = await fse.pathExists(existingBaseFile)
   if (!baseExists || useforce) {
     // si le fichier n'existe pas
     // on crée l'image qui servira de base de comparaison
     // NOTE -> testcafe a besoin d'un chemin relatif
-    const baseFile = path.join(basePath, baseName)
-    await t.takeScreenshot(baseFile)
+    const relativefile = path.join(folder, filename)
+    await t.takeScreenshot(relativefile)
   }
+}
+
+async function generateActualFile(t, title) {
+  const extension = '-actual.png'
+  const filename = `${title}${extension}`
+  const folder = path.join('tmp', 'screenshots')
+  const relativefile = path.join(folder, filename)
+  await t.takeScreenshot(relativefile)
 }
 
 // async function compare(files, treshold = DEFAULT_TRESHOLD) {
@@ -85,13 +93,8 @@ pages.forEach(({ delay, title, /* treshold, */ url }) => {
   fixture(`Visual Tests: ${pageurl}`).page(pageurl)
   test(title, async t => {
     if (delay) await sleep(delay)
-    await generateBaseFile(t, title, USE_FORCE)
-    // // compare l'image de base avec l'actuelle
-    // const actualName = `${title}${actualExt}`
-    // const actualPathPattern = `${path.join(tmpOutputPath, baseName)}`
-    // // NOTE -> permet aux tests de tourner sur CircleCI
-    // // output de l'image de comparaison dans le dossier tmp
-    // await t.takeScreenshot(actualName, false, tmpOutputPath)
+    await generateBaseFile(t, title)(USE_FORCE)
+    await generateActualFile(t, title)
     // const files = { actual: actualPathPattern, base: basePathPattern }
     // const reason = await compare(files, treshold)
     // await t.expect(reason).ok()

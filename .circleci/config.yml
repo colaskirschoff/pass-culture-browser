@@ -73,6 +73,8 @@ jobs:
             cd ~/pass-culture-main/webapp
             mkdir -p ./tmp/screenshots
             yarn test:visual
+      - store_artifacts:
+          path: ./tmp/screenshots
 
   deploy:
     docker:

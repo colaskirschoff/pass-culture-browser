@@ -83,7 +83,9 @@ async function compareScreenshots(title, treshold = DEFAULT_TRESHOLD) {
 
 pages.forEach(({ delay, title, treshold, url }) => {
   const pageurl = `${ROOT_PATH}${url}`
-  fixture(`Visual Tests: ${pageurl}`).page(pageurl)
+  fixture(`Visual Tests: ${pageurl}`)
+    .page(pageurl)
+    .beforeEach(t => t.resizeWindow(1920, 1080))
   test(title, async t => {
     if (delay) await sleep(delay)
     await generateBaseFile(USE_FORCE)(t, title)

@@ -16,87 +16,79 @@
 import path from 'path'
 import fse from 'fs-extra'
 import parseArgs from 'minimist'
-// import resemble from 'resemblejs'
+import resemble from 'resemblejs'
 
 // chargement de la configuration des pages a tester
 import pages from './config.json'
 import { ROOT_PATH } from '../../src/utils/config'
 
 const args = parseArgs(process.argv.slice(2))
-// const DEFAULT_TRESHOLD = 0
+const DEFAULT_TRESHOLD = 0
 const USE_FORCE = args.force !== undefined
 const APP_BASE_DIR = path.join(__dirname, '..', '..')
+
+const FILE_EXT = '.png'
+const FOLDER_NAME = 'screenshots'
+const BASE_FOLDER = path.join('testcafe', FOLDER_NAME)
+const ACTUAL_FOLDER = path.join('tmp', FOLDER_NAME)
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms))
 }
 
-// const actualExt = '-actual.png'
-// const tmpOutputPath = path.join(APP_BASE_DIR, 'tmp', 'screenshots')
-
-// const baseName = `${title}${baseExt}`
-// // check si le fichier base existe
-// const basePathPattern = path.join(outputPath, baseName)
-// console.log('basePathPattern', basePathPattern)
-// const baseExists = await fse.pathExists(basePathPattern)
-// if (!baseExists || USE_FORCE) {
-//   // creation de l'image de base si elle n'existe pas
-//   await t.takeScreenshot(baseName, false, outputPath)
-// }
-
-const generateBaseFile = (t, title) => async useforce => {
-  const extension = '-base.png'
-  const filename = `${title}${extension}`
-  const folder = path.join('testcafe', 'screenshots')
-  // check si le fichier base existe
-  const existingBaseFile = path.join(APP_BASE_DIR, folder, filename)
-  const baseExists = await fse.pathExists(existingBaseFile)
-  if (!baseExists || useforce) {
-    // si le fichier n'existe pas
-    // on crée l'image qui servira de base de comparaison
-    // NOTE -> testcafe a besoin d'un chemin relatif
-    const relativefile = path.join(folder, filename)
-    await t.takeScreenshot(relativefile)
-  }
+function getFileName(title) {
+  return `${title}${FILE_EXT}`
 }
 
-async function generateActualFile(t, title) {
-  const extension = '-actual.png'
-  const filename = `${title}${extension}`
-  const folder = path.join('tmp', 'screenshots')
+async function generateScreenshot(t, folder, filename) {
+  // NOTE -> testcafe a besoin d'un chemin relatif
   const relativefile = path.join(folder, filename)
   await t.takeScreenshot(relativefile)
 }
 
-// async function compare(files, treshold = DEFAULT_TRESHOLD) {
-//   // FIXME -> use promise.then/catch/finally
-//   const promise = new Promise((resolve, reject) => {
-//     resemble(files.base)
-//       .compareTo(files.actual)
-//       .onComplete(async ({ misMatchPercentage, rawMisMatchPercentage }) => {
-//         const humanPercent = misMatchPercentage
-//         const imagesAreSame = rawMisMatchPercentage <= treshold
-//         if (!imagesAreSame) {
-//           const reason = `Images are different by ${humanPercent}%`
-//           return reject(new Error(reason))
-//         }
-//         return resolve(true)
-//       })
-//   })
-//   return promise
-// }
+const generateActualFile = async (t, title) => {
+  const filename = getFileName(title)
+  await generateScreenshot(t, ACTUAL_FOLDER, filename)
+}
 
-// const generateActualFile = () => {}
+const generateBaseFile = useforce => async (t, title) => {
+  const filename = getFileName(title)
+  // check si le fichier pour la base de comparaison existe
+  const existingBaseFile = path.join(APP_BASE_DIR, BASE_FOLDER, filename)
+  const baseExists = await fse.pathExists(existingBaseFile)
+  if (baseExists || !useforce) return
+  await generateScreenshot(t, BASE_FOLDER, filename)
+}
 
-pages.forEach(({ delay, title, /* treshold, */ url }) => {
+async function compareScreenshots(title, treshold = DEFAULT_TRESHOLD) {
+  // FIXME -> use promise.then/catch/finally
+  const promise = new Promise((resolve, reject) => {
+    const filename = getFileName(title)
+    const basefile = path.join(APP_BASE_DIR, BASE_FOLDER, filename)
+    const actualfile = path.join(APP_BASE_DIR, ACTUAL_FOLDER, filename)
+    resemble(basefile)
+      .compareTo(actualfile)
+      .onComplete(async ({ misMatchPercentage, rawMisMatchPercentage }) => {
+        const humanPercent = misMatchPercentage
+        const imagesAreSame = rawMisMatchPercentage <= treshold
+        if (!imagesAreSame) {
+          const reason = `Images are different by ${humanPercent}%`
+          return reject(new Error(reason))
+        }
+        return resolve(true)
+      })
+  })
+  return promise
+}
+
+pages.forEach(({ delay, title, treshold, url }) => {
   const pageurl = `${ROOT_PATH}${url}`
   fixture(`Visual Tests: ${pageurl}`).page(pageurl)
   test(title, async t => {
     if (delay) await sleep(delay)
-    await generateBaseFile(t, title)(USE_FORCE)
+    await generateBaseFile(USE_FORCE)(t, title)
     await generateActualFile(t, title)
-    // const files = { actual: actualPathPattern, base: basePathPattern }
-    // const reason = await compare(files, treshold)
-    // await t.expect(reason).ok()
+    const reason = await compareScreenshots(title, treshold)
+    await t.expect(reason).ok()
   })
 })

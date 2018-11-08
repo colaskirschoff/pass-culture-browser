@@ -5,55 +5,11 @@ import moment from 'moment'
 import PropTypes from 'prop-types'
 
 import withBookingForm from './withBookingForm'
+import { getCalendarProvider, onCalendarUpdates, onTimeUpdates } from './utils'
 import { isSameDayInEachTimezone, getPrice } from '../../helpers'
 import { CalendarField, HiddenField, SelectField } from '../forms/inputs'
 
-/**
- * Calcule les valeurs du form
- * En fonction de la date selectionnée par l'user
- *
- * NOTE -> Howto implement calculator: https://codesandbox.io/s/oq52p6v96y
- * FIXME -> hot-reload cause console.error
- */
-const onCalendarUpdates = (selection, name, allvalues) => {
-  if (!selection) return allvalues
-  const resetObj = { price: null, stockId: null, time: null }
-  if (!selection.date) return resetObj
-  // iteration sur l'array bookables
-  // recupere tous les events pour la selection par l'user
-  const { bookables } = allvalues
-  const userChosen = bookables.filter(o =>
-    // l'offer est OK si elle est le même jour
-    // que la date selectionnee par l'user dans le calendrier
-    isSameDayInEachTimezone(selection.date, o.beginningDatetime)
-  )
-  const issingle = userChosen && userChosen.length === 1
-  if (!userChosen || !issingle) return resetObj
-  return {
-    price: userChosen[0].price,
-    stockId: userChosen[0].id,
-    time: userChosen[0].id,
-  }
-}
-
-const onTimeUpdates = (selection, name, formValues) => {
-  const resetObj = {}
-  if (!selection || formValues.stockId) return resetObj
-  const { bookables } = formValues
-  const booked = bookables.filter(o => o.id === selection)
-  return {
-    price: booked[0].price,
-    stockId: booked[0].id,
-  }
-}
-
 class BookingFormComponent extends React.PureComponent {
-  getCalendarProvider = () => {
-    const { formValues } = this.props
-    const results = formValues.bookables.map(o => o.beginningDatetime)
-    return results
-  }
-
   parseHoursByStockId = () => {
     const { formValues } = this.props
     const { date, bookables } = formValues
@@ -73,7 +29,7 @@ class BookingFormComponent extends React.PureComponent {
   render() {
     const { isEvent, formValues } = this.props
     const { stockId, price } = formValues
-    const calendarDates = this.getCalendarProvider()
+    const calendarDates = getCalendarProvider(formValues)
     const hoursAndPrices = this.parseHoursByStockId()
     return (
       <React.Fragment>

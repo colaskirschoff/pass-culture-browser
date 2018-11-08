@@ -1,4 +1,4 @@
-import flattenErrors from '../utils'
+import flattenErrors from '../flattenErrors'
 
 describe('src | components | booking | utils', () => {
   describe('flattenErrors', () => {

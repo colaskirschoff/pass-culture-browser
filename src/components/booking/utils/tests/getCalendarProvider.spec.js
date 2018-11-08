@@ -1,5 +1,4 @@
-/* eslint no-console: 0 */
-// yarn test:unit ./src/components/booking/utils/tests/getCalendarProvider --watch
+// jest ./src/components/booking/utils/tests/getCalendarProvider --watch
 import moment from 'moment'
 
 import getCalendarProvider from '../getCalendarProvider'
@@ -61,9 +60,10 @@ describe('src | components | booking | utils', () => {
   })
   it('return filtered array with beginningDatetime', () => {
     const mom = moment()
-    const expected = [mom]
+    const mom2 = moment()
+    const expected = [mom2, mom]
     const value = {
-      bookables: [{ beginningDatetime: mom }, undefined, null, false],
+      bookables: [{ beginningDatetime: mom2 }, { beginningDatetime: mom }],
     }
     const result = getCalendarProvider(value)
     expect(result).toStrictEqual(expected)

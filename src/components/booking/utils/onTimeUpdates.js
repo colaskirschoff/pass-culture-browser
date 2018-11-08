@@ -1,12 +1,17 @@
-const onTimeUpdates = (selection, name, formValues) => {
+const onTimeUpdates = (selectedStockId, name, formValues) => {
   const resetObj = {}
-  if (!selection || formValues.stockId) return resetObj
+  const isvalid =
+    selectedStockId &&
+    typeof selectedStockId === 'string' &&
+    formValues &&
+    formValues.stockId &&
+    typeof formValues.stockId === 'string' &&
+    formValues.bookables &&
+    Array.isArray(formValues.bookables)
+  if (!isvalid) return resetObj
   const { bookables } = formValues
-  const booked = bookables.filter(o => o.id === selection)
-  return {
-    price: booked[0].price,
-    stockId: booked[0].id,
-  }
+  const { price, id: stockId } = bookables.find(o => o.id === selectedStockId)
+  return { price, stockId }
 }
 
 export default onTimeUpdates

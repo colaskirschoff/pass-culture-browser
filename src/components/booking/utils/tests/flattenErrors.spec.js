@@ -1,3 +1,4 @@
+// jest ./src/components/booking/utils/tests/flattenErrors --watch
 import flattenErrors from '../flattenErrors'
 
 describe('src | components | booking | utils', () => {

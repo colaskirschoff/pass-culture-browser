@@ -1,5 +1,4 @@
-/* eslint no-console: 0 */
-// ./node_modules/.bin/jest --env=jsdom ./path/to/file.spec.js --watch
+// jest ./src/components/booking/utils/tests/onCalendarUpdates --watch
 import onCalendarUpdates from '../onCalendarUpdates'
 
 describe('src | components | booking | utils | onCalendarUpdates', () => {
